@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore cartas de Magic: The Gathering e guarde suas descobertas.">
+  <title>Garimpo MTG</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/estilo.css">
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="container d-flex align-items-center justify-content-between gap-2" aria-label="Menu principal">
+      <a class="brand" href="#" aria-label="Garimpo MTG, início"><span aria-hidden="true">✦</span> Garimpo <small>MTG</small></a>
+      <div class="d-flex gap-3 align-items-center">
+        <a href="#explorar">Explorar</a>
+        <a href="#favoritos">Favoritos <span id="saved-count" class="badge rounded-pill">0</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-content">
+        <p class="eyebrow">Magic: The Gathering</p>
+        <h1 id="hero-title">Um mundo de cartas<br>para explorar.</h1>
+        <p class="hero-description">Explore coleções de Magic e salve as cartas que você quer testar no próximo deck.</p>
+        <a class="btn btn-accent" href="#explorar">Explorar cartas <span aria-hidden="true">↓</span></a>
+      </div>
+      <small class="art-credit">The Wandering Emperor · Tommy Arnold</small>
+    </section>
+
+    <section class="container section-space" id="explorar" aria-labelledby="explore-title">
+      <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
+        <div>
+          <h2 id="explore-title">Explorar cartas</h2>
+          <p class="muted mb-0">Filtre por coleção, cor, tipo ou raridade.</p>
+        </div>
+        <button type="button" id="random" class="btn btn-outline-light"><span aria-hidden="true">✦</span> Sortear carta</button>
+      </div>
+
+      <form id="filters" class="panel row g-3 align-items-end mb-3">
+        <div class="col-12 col-md-6 col-lg-4">
+          <label for="set" class="form-label">Coleção</label>
+          <select id="set" class="form-select"><option value="">Todas as coleções</option></select>
+          <div id="set-feedback" class="small mt-1" role="status"></div>
+          <button type="button" id="retry-sets" class="btn btn-sm btn-outline-light mt-2" hidden>Tentar carregar coleções</button>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <label for="color" class="form-label">Cor</label>
+          <select id="color" class="form-select">
+            <option value="">Qualquer</option><option value="w">Branca</option><option value="u">Azul</option>
+            <option value="b">Preta</option><option value="r">Vermelha</option><option value="g">Verde</option><option value="c">Incolor</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <label for="type" class="form-label">Tipo</label>
+          <select id="type" class="form-select">
+            <option value="">Qualquer</option><option value="creature">Criatura</option><option value="artifact">Artefato</option>
+            <option value="enchantment">Encantamento</option><option value="instant">Mágica instantânea</option>
+            <option value="sorcery">Feitiço</option><option value="land">Terreno</option><option value="planeswalker">Planeswalker</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-6 col-lg-2">
+          <label for="rarity" class="form-label">Raridade</label>
+          <select id="rarity" class="form-select">
+            <option value="">Qualquer</option><option value="common">Comum</option><option value="uncommon">Incomum</option>
+            <option value="rare">Rara</option><option value="mythic">Mítica</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-6 col-lg-2 d-grid"><button id="apply" class="btn btn-accent" type="submit">Filtrar</button></div>
+      </form>
+
+      <form id="lookup" class="panel lookup mb-4" novalidate>
+        <label for="card-name" class="form-label">Já sabe o nome da carta?</label>
+        <div class="d-flex flex-wrap gap-2">
+          <input id="card-name" class="form-control" maxlength="150" placeholder="Ex.: Lightning Bolt" aria-describedby="action-feedback" autocomplete="off">
+          <button id="find" type="submit" class="btn btn-outline-light">Buscar por nome</button>
+        </div>
+      </form>
+      <div id="action-feedback" role="status"></div>
+      <div id="search-feedback" role="status"></div>
+      <button id="retry-search" class="btn btn-outline-light mb-3" type="button" hidden>Tentar novamente</button>
+      <div id="results" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-3"></div>
+      <button id="more" class="btn btn-outline-light d-block mx-auto mt-4" type="button" hidden>Carregar mais cartas</button>
+    </section>
+
+    <section class="section-space saved-section" id="favoritos" aria-labelledby="saved-title">
+      <div class="container">
+        <h2 id="saved-title">Favoritos</h2>
+        <p class="muted">Cartas guardadas neste navegador.</p>
+        <p id="saved-empty" class="empty">Use a estrela de uma carta para guardar sua primeira descoberta.</p>
+        <div id="saved" class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-3"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container d-flex justify-content-between flex-wrap gap-2 py-4">
+    <span>Garimpo MTG</span>
+    <span>Dados e imagens via <a href="https://scryfall.com/">Scryfall</a> · Magic © Wizards of the Coast</span>
+  </footer>
+
+  <dialog id="details" aria-labelledby="detail-title">
+    <form method="dialog" class="text-end"><button class="btn btn-sm btn-outline-light" aria-label="Fechar ficha" autofocus>✕</button></form>
+    <div id="detail-content"></div>
+  </dialog>
+</body>
+</html>
